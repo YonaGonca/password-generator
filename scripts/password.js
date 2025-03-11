@@ -5,7 +5,7 @@
 const numbers = "0123456789"
 const lowerLetters = "abcdefghijklmnopqrstuvwxyz"
 const upperLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-const specials = "!@€#£$§%&*+-<>;,.:_~^«»"
+const specials = "@€#£$§%&"
 
 //Functions
 
@@ -40,11 +40,31 @@ function generatePassword() {
     let charSet = createCharset();
     let numberOfChar = parseInt(document.getElementById("numberOfChar").value);
     if (charSet.length === 0) {
-        document.getElementById("result").innerText = "Selecciona al menos un tipo de carácter";
+        document.getElementById("result").innerText = "Select at least one character type";
         return;
     }
     let password = createPassword(numberOfChar, charSet);
-    document.getElementById("result").innerText = "Contraseña: " + password;
-}
+    document.getElementById("result").innerHTML = `${password}<i class="fa-solid fa-copy" id="icon" onclick="copyToClipboard()"></i>`;}
+
+function copyToClipboard() {
+
+    let copyText = document.getElementById("result").innerText;
+    let icon = document.getElementById("icon");
+      
+    navigator.clipboard.writeText(copyText).then(() => {
+        icon.classList.remove("fa-copy");
+        icon.classList.add("fa-check");
+
+        // Restaurar el icono después de 2 segundos
+        setTimeout(() => {
+            icon.classList.remove("fa-check");
+            icon.classList.add("fa-copy");
+        }, 2000);
+    }).catch(err => {
+        console.error("Error copying text: ", err);
+    });
+  } 
+
+
 
 
